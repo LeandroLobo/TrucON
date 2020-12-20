@@ -1,0 +1,122 @@
+<!-- We don't need a full layout in this file because this page will be parsed with Ajax.  -->
+<div class="page" data-name="mesa">
+    <!-- FAB's -->
+  <div class="fab fab-extended fab-left-bottom T">
+    <a href="#">
+      <i class="icon f7-icons if-not-md">chevron_up_circle</i>
+      <i class="icon f7-icons if-not-md">chevron_down_circle</i>
+      <i class="icon material-icons md-only">expand_less</i>
+      <i class="icon material-icons md-only">expand_more</i>
+      <div class="fab-text"><span class="letra-grande">T</span></div>
+    </a>
+    <div class="fab-buttons fab-extended fab-buttons-top" id="lit"></div>
+  </div>
+
+  <div class="fab fab-extended fab-center-bottom E color-green">
+    <a href="#">
+      <i class="icon f7-icons if-not-md">chevron_up_circle</i>
+      <i class="icon f7-icons if-not-md">chevron_down_circle</i>
+      <i class="icon material-icons md-only">expand_less</i>
+      <i class="icon material-icons md-only">expand_more</i>
+      <div class="fab-text"><span class="textoEnvido letra-grande"></span></div>
+    </a>
+    <div class="fab-buttons fab-extended fab-buttons-top" id="lie"></div>
+  </div>
+
+  <div class="fab fab-right-bottom M">
+    <a href="#">
+      <i class="icon f7-icons if-not-md">gear_alt</i>
+      <i class="icon f7-icons if-not-md">gear_alt_fill</i>
+      <i class="icon material-icons md-only">settings</i>
+      <i class="icon material-icons md-only">close</i>
+    </a>
+    <div class="fab-buttons fab-buttons-top">
+      <a href="#" class="fab-label-button" id="n1">
+        <i class="icon f7-icons if-not-md">timelapse</i>
+        <i class="icon material-icons md-only">brightness_high</i>
+        <span class="fab-label">Naipes Españoles</span>
+      </a>
+      <a href="#" class="fab-label-button" id="n0">
+        <i class="icon f7-icons if-not-md">flame_fill</i>
+        <img src="img/flame.svg">
+        <span class="fab-label">Naipes 4 Elementos</span>
+      </a>
+      <a href="#" class="fab-label-button" id="cambiar-anotador">
+        <i class="icon f7-icons if-not-md">pencil</i>
+        <i class="icon material-icons md-only">create</i>
+        <span class="fab-label">Cambiar Anotador de Puntos</span>
+      </a>
+      <a href="#" class="fab-label-button terminar-partida">
+        <i class="icon f7-icons if-not-md">clear</i>
+        <i class="icon material-icons md-only">backspace</i>
+        <span class="fab-label">Salir</span>
+      </a>
+
+    </div>
+  </div>
+
+    <div class="page-content">
+        <div class="block" id="mesa-block">
+          <center>
+            <div class="row" id="mesa">
+                <div class="col">
+                    <div class="row display-flex align-items-center">
+                      <div class="col-15">
+                        <h5 id="total0"></h5>
+                        <img src="img/trazos/00.png" class="f00" width="75%">
+                        <img src="img/trazos/00.png" class="f01" width="75%">
+                        <img src="img/trazos/00.png" class="f02" width="75%"><hr>
+                        <img src="img/trazos/00.png" class="f03" width="75%">
+                        <img src="img/trazos/00.png" class="f04" width="75%">
+                        <img src="img/trazos/00.png" class="f05" width="75%">
+                      </div>
+                      <div class="col-15">
+                        <h5 id="total1"></h5>
+                        <img src="img/trazos/00.png" class="f10" width="75%">
+                        <img src="img/trazos/00.png" class="f11" width="75%">
+                        <img src="img/trazos/00.png" class="f12" width="75%"><hr>
+                        <img src="img/trazos/00.png" class="f13" width="75%">
+                        <img src="img/trazos/00.png" class="f14" width="75%">
+                        <img src="img/trazos/00.png" class="f15" width="75%">
+                      </div>
+                      <div class="col-70">
+                        <div class="display-flex justify-content-center row">
+                            <img id="o0" class="col-30" src="img/naipes1/vacio.png"></img>
+                            <img id="o1" class="col-30" src="img/naipes1/vacio.png"></img>
+                            <img id="o2" class="col-30" src="img/naipes1/vacio.png"></img>
+                        </div>
+                        <div class="display-flex justify-content-center row">
+                            <img id="y0" class="col-33" src="img/naipes1/vacio.png"></img>
+                            <img id="y1" class="col-33" src="img/naipes1/vacio.png"></img>
+                            <img id="y2" class="col-33" src="img/naipes1/vacio.png"></img>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="display-flex justify-content-center row">
+                        <img id="c0" class="en-mano col-33" src="img/naipes1/vacio.png"></img>
+                        <img id="c1" class="en-mano col-33" src="img/naipes1/vacio.png"></img>
+                        <img id="c2" class="en-mano col-33" src="img/naipes1/vacio.png"></img>
+                    </div>
+                </div>
+            </div>
+          </center>
+        </div>
+
+        <div class="popover popover-respuesta-truco">
+            <div class="list">
+                <h4 class="margin-left mensajeRT"></h4>
+                <ul id="liRT">
+                </ul>
+            </div>
+        </div>
+
+        <div class="popover popover-respuesta-envido">
+            <div class="list">
+                <h4 class="margin-left mensajeRE"></h4>
+                <ul id="liRE">
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>

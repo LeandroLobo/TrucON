@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="theme-dark color-theme-red">
+<head>
+    <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+        -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *"> -->
+
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <meta name="theme-color" content="#2196f3">
+    <!-- Your app title -->
+    <title>TrucOn</title>
+    <!-- Path to Framework7 Library CSS -->
+    <link rel="stylesheet" href="lib/framework7/css/framework7.bundle.min.css">
+    <!-- Path to icons -->
+    <link rel="stylesheet" href="css/icons.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="icon" href="img/favicon.svg" type="image/svg">
+</head>
+
+<body>
+    <div id="app">
+        <!-- Statusbar overlay -->
+        <div class="statusbar"></div>
+    
+        <!-- Your main view, should have "view-main" class -->
+        <div class="view view-main">
+            <!-- Initial Page, "data-name" contains page name -->
+            <div data-name="index" class="page">
+                <!-- Scrollable page content -->
+                <div class="page-content">
+                    <div class="block"><center>
+                            <div class="logotipo"><img src="img/logo_TrucOn_blanco.png" width="50%"></div>
+                            
+                            <div class="display-flex flex-direction-column lobby">
+                                <a href="" class="jugar-truco">Crear Partida</a>
+                                <a href="" data-popup=".unirse-partida" class="popup-open unirse-privada">Unirse a Partida Privada</a>
+                                <a href="" class="logout">Cerrar Sesión</a>
+                            </div></center>
+
+                        <!-- And somewhere in DOM -->
+
+                        <div class="popup popup-inicio">
+                            <div class="view">
+                                <div class="page"><center>
+                                    <div class="page-content">
+                                        <div class="logotipo"><img src="img/logo_TrucOn_blanco.png" width="50%"></div>
+                                        <h3>Jugá al TRUCO con tus amigos</h3>
+                                        <h3>El juego de naipes favorito de los argentinos</h3>
+                                        <input type="button" value="Iniciar Sesión" class="popup-close abrir-login">
+                                        <p>¿No estas registrado aun?</p>
+                                        <input type="button" value="Registrarse" class="popup-close abrir-registro">
+                                    </div></center>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="popup popup-login">
+                            <div class="view">
+                                <div class="page"><center>
+                                    <div class="page-content">
+                                        <div class="list no-hairlines-md">
+                                          <ul id="ul-login">
+                                            <li class="item-content item-input">
+                                              <div class="item-media">
+                                                <i class="icon f7-icons">envelope</i>
+                                              </div>
+                                              <div class="item-inner">
+                                                <div class="item-title item-floating-label">E-mail</div>
+                                                <div class="item-input-wrap">
+                                                  <input type="email" placeholder="Ingresa tu e-mail" id="email-login">
+                                                  <span class="input-clear-button"></span>
+                                                </div>
+                                              </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                              <div class="item-media">
+                                                <i class="icon f7-icons">exclamationmark_shield</i>
+                                              </div>
+                                              <div class="item-inner">
+                                                <div class="item-title item-floating-label">Contraseña</div>
+                                                <div class="item-input-wrap">
+                                                  <input type="password" placeholder="Ingresa tu contraseña" id="password-login">
+                                                  <span class="input-clear-button"></span>
+                                                </div>
+                                              </div>
+                                            </li>
+                                            <li class="row display-flex justify-content-center">
+                                                <input type="button" value="Comienza a Jugar" class="margin col-40 login">
+                                            </li>
+                                          </ul>
+                                        </div>
+                                    </div></center>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="popup popup-registro">
+                            <div class="view">
+                                <div class="page"><center>
+                                    <div class="page-content">
+                                        <div class="list no-hairlines-md">
+                                          <ul>
+                                            <li class="item-content item-input">
+                                              <div class="item-media">
+                                                <i class="icon f7-icons">person_alt</i>
+                                              </div>
+                                              <div class="item-inner">
+                                                <div class="item-title item-floating-label">Apodo</div>
+                                                <div class="item-input-wrap">
+                                                  <input type="text" placeholder="Tu nombre para mostrar (max 8 caracteres)" id="nickName" maxlength="8">
+                                                  <span class="input-clear-button"></span>
+                                                </div>
+                                              </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                              <div class="item-media">
+                                                <i class="icon f7-icons">envelope</i>
+                                              </div>
+                                              <div class="item-inner">
+                                                <div class="item-title item-floating-label">E-mail</div>
+                                                <div class="item-input-wrap">
+                                                  <input type="email" placeholder="Ingresa tu e-mail" id="email-registro">
+                                                  <span class="input-clear-button"></span>
+                                                </div>
+                                              </div>
+                                            </li>
+                                            <li class="item-content item-input">
+                                              <div class="item-media">
+                                                <i class="icon f7-icons">exclamationmark_shield</i>
+                                              </div>
+                                              <div class="item-inner">
+                                                <div class="item-title item-floating-label">Contraseña</div>
+                                                <div class="item-input-wrap">
+                                                  <input type="password" placeholder="Ingresa tu contraseña" id="password-registro">
+                                                  <span class="input-clear-button"></span>
+                                                </div>
+                                              </div>
+                                            </li>
+                                            <li class="row display-flex justify-content-center">
+                                                <input type="button" value="Registrar Usuario" class="margin col-40 registrar">
+                                            </li>
+                                          </ul>
+                                        </div>
+                                    </div></center>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="popup unirse-partida">
+                            <div class="view">
+                                <div class="page"><center>
+                                    <div class="page-content">
+                                        <div class="list no-hairlines-md">
+                                            <h3>Ingresá el Email de tu oponente</h3>
+                                            <ul>
+                                                <li class="item-content item-input">
+                                                    <div class="item-media">
+                                                        <i class="icon f7-icons">envelope</i>
+                                                    </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-floating-label">E-mail</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="email" class="email-partida">
+                                                            <span class="input-clear-button"></span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="row display-flex justify-content-center">
+                                                    <input type="button" value="Unirse a la Partida" class="margin col-40 popup-close" id="unirse">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div></center>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="lib/framework7/js/framework7.bundle.min.js"></script>
+    <script type="text/javascript" src="js/TrucOn.js"></script>
+    <script type="text/javascript" src="js/my-app.js"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+    
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyDlJsikqmpyKuggk-wyVHJZHb4VoTGzwEE",
+        authDomain: "trucon-1ba45.firebaseapp.com",
+        databaseURL: "https://trucon-1ba45.firebaseio.com",
+        projectId: "trucon-1ba45",
+        storageBucket: "gs://trucon-1ba45.appspot.com",
+        messagingSenderId: "554789608325",
+        appId: "1:554789608325:web:513d95e2ca0239d6e682ec"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+    var storage = firebase.storage();
+    var storageRef = storage.ref();
+    </script>
+</body>
+
+</html>
