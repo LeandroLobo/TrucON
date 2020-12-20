@@ -1097,6 +1097,9 @@ function analizarPartida(){
 				}; break;
 		case 400: if(NJ==datos.pregunta){
 					app.dialog.alert('Me voy al mazo...',datos.jugador[(NJ+1)%2].nombre+' dice:' );
+					if(datos.contVueltas==0 && datos.contCartas==0){
+						datos.nivelTruco+=datos.nivelEnvido;
+					}
 					anotarTruco(NJ);
 				}; break;
 		case 401: if(NJ==datos.pregunta){
