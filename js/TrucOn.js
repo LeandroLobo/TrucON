@@ -151,12 +151,13 @@ function valorCartas(x){
 }
 
 function mostrarUnaCarta(i,c,x,p) {
-	return new Promise(resolve => {
-		var naipeRef = storageRef.child('naipes'+MN+'/'+datos.jugador[x].palo[i]+datos.jugador[x].numero[i]+'.png');
-		naipeRef.getDownloadURL().then(function(url){
-			$$('#'+c+p).attr('src',url);
-		});
-	});
+	// return new Promise(resolve => {
+	// 	var naipeRef = storageRef.child('naipes'+MN+'/'+datos.jugador[x].palo[i]+datos.jugador[x].numero[i]+'.png');
+	// 	naipeRef.getDownloadURL().then(function(url){
+	// 		$$('#'+c+p).attr('src',url);
+	// 	});
+	// });
+	$$('#'+c+p).attr('src','img/naipes'+MN+'/'+datos.jugador[x].palo[i]+datos.jugador[x].numero[i]+'.png');
 }
 
 function mostrarCartas(){
@@ -237,7 +238,7 @@ function repartirCartas(){
 		while(k==0){
 			h=0;
 			n=parseInt(Math.random()*10+1);
-			p=parseInt(Math.random()*4+1);
+			p=parseInt(Math.random()*2+1);
 			for(i=0; i<2; i++){
 				for(j=0; j<3; j++){
 					if(n==datos.jugador[i].numero[j] && p==datos.jugador[i].palo[j]){
@@ -299,6 +300,7 @@ function jugarCarta(carta){
 			datos.contCartas=0;
 			datos.contVueltas++;
 			analizarMano();
+			return;
 		}
 		if(datos.contCartas==0){
 			datos.enMesa=[0,0];
@@ -380,6 +382,8 @@ function analizarMano(){
 	if(B>A){
 		datos.turno=1;
 	}
+	datos.enMesa=[0,0];
+	partida.set(datos);
 }
 
 function anotarTruco(xx){
@@ -416,6 +420,16 @@ function cantarTruco(){
 			datos.codigo=400;
 			datos.pregunta=(NJ+1)%2;
 			partida.set(datos);
+			if(datos.contVueltas==0 && datos.contCartas==0 && $$('.textoEnvido').html()){
+				if(datos.nivelEnvido==3 && datos.jugador[(NJ+1)%2].flor==1){
+					app.dialog.alert('¿Te vas?, tengo Flor, mirá...',datos.jugador[(NJ+1)%2].nombre+' dice:');
+					for(i=0; i<3; i++){
+						$$('#o'+i).attr('src','img/naipes'+MN+'/'+datos.jugador[(NJ+1)%2].palo[i]+datos.jugador[(NJ+1)%2].numero[i]+'.png');
+					}
+				}else{
+					app.dialog.alert('¿Tan temprano? ¿Y el envido?',datos.jugador[(NJ+1)%2].nombre+' dice:');
+				}
+			}
 		});
 		return;
 	}
@@ -647,6 +661,9 @@ function hayGanador(){
 	if(datos.turno==NJ && datos.esTruco==1 && datos.meVoy==0){
 		mostrarUnaCarta(datos.carta,'o',(NJ+1)%2,vuelta);
 	}
+	if(datos.turno==NJ && datos.esTruco==1 && datos.meVoy==0){
+		mostrarUnaCarta(datos.carta,'o',(NJ+1)%2,vuelta);
+	}
 	ganador=-1;
 	if(datos.total[1]>=30){
 		datos.total[1]=30;
@@ -710,8 +727,6 @@ function hayGanador(){
 		}
 	}else{
 		actualizarAnotador();
-		$$('#total0').html(datos.jugador[0].nombre);
-		$$('#total1').html(datos.jugador[1].nombre);
 		if(NJ!=datos.mano%2 && datos.esTruco==1){
 			setTimeout(function(){
 		            app.dialog.alert('Repartir', 'TrucOn',function(){repartirCartas();});
@@ -723,8 +738,6 @@ function hayGanador(){
 function mostrarGanadorEnvido(){
 	datos.jugando=false;
 	actualizarAnotador();
-	$$('#total0').html(datos.jugador[0].nombre);
-	$$('#total1').html(datos.jugador[1].nombre);
 	if(datos.ganadorEnvido==NJ){
 		app.dialog.alert('Vos '+datos.jugador[NJ].envido+' ... '+datos.jugador[(NJ+1)%2].nombre+' '+datos.jugador[(NJ+1)%2].envido, 'Ganaste');
 	}else{
@@ -1096,11 +1109,25 @@ function analizarPartida(){
 					return;
 				}; break;
 		case 400: if(NJ==datos.pregunta){
-					app.dialog.alert('Me voy al mazo...',datos.jugador[(NJ+1)%2].nombre+' dice:' );
-					if(datos.contVueltas==0 && datos.contCartas==0){
-						datos.nivelTruco+=datos.nivelEnvido;
-					}
-					anotarTruco(NJ);
+					app.dialog.alert('Me voy al mazo...',datos.jugador[(NJ+1)%2].nombre+' dice:', function(){
+						if(datos.contVueltas==0 && datos.contCartas==0 && $$('.textoEnvido').html()){
+							datos.nivelTruco+=1;
+							if(datos.nivelEnvido==3 && datos.jugador[NJ].flor==1){
+								datos.nivelTruco+=2;
+								app.dialog.alert('Pará, tengo Flor, mirá...',function(){
+									for(i=0; i<3; i++){
+										$$('#c'+i).attr('src','img/naipes'+MN+'/vacio.png');
+										$$('#y'+i).attr('src','img/naipes'+MN+'/'+datos.jugador[NJ].palo[i]+datos.jugador[NJ].numero[i]+'.png');
+									}
+									anotarTruco(NJ);
+								});
+							}else{
+								anotarTruco(NJ);
+							}
+						}else{
+							anotarTruco(NJ);
+						}
+					});
 				}; break;
 		case 401: if(NJ==datos.pregunta){
 					app.dialog.alert('No quiero.',datos.jugador[(NJ+1)%2].nombre+' dice:' );

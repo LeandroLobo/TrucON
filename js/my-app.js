@@ -39,7 +39,7 @@ var app = new Framework7({
   });
 
 var mainView = app.views.create('.view-main');
-var email='', email2='', password, partida, user, NJ, nombre, nombre2, errorLogin=0, modeloNaipes=0, palitos=0, MN=0;
+var email='', email2='', password, partida, user, NJ, nombre, nombre2, modeloNaipes=1, palitos=1, MN=0;
 
 /************ DEVICE READY *************/
 $$(document).on('deviceready', function() {
@@ -50,6 +50,7 @@ $$(document).on('deviceready', function() {
 
 $$(document).on('page:init', function (e) {
     console.log(e);
+
 });
 
 /**************** INDEX **************/
@@ -60,16 +61,14 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     cerrarTruco=app.popover.close(".popover-respuesta-truco");
     cerrarEnvido=app.popover.close(".popover-respuesta-envido");
     app.dialog.close();
+
     $$('.jugar-truco').on('click',function(){
         NJ=0;datos.salir=false;salir=false;
         datos.jugador[NJ].nombre=nombre;
         partida=db.collection("partida").doc(email);
         partida.set(datos).then(function(){
             app.views.main.router.navigate('/mesa/');
-            app.dialog.preloader('Esperando oponente');
-            setTimeout(function () {
-                app.dialog.close();
-            }, 20000);
+            app.dialog.alert('Recuerda pasarle tu Email para que pueda unirse a la partida.','Esperando a tu oponente');
         })
         .catch(function(error){
             console.log(error);
@@ -80,8 +79,13 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     $$('#unirse').on('click',function(){
         NJ=1;datos.salir=false;salir=false;
         email2=$$('.email-partida').val();
-        partida=db.collection("partida").doc(email2);
-        getDatosUnirse();
+        if(email2==''){
+            app.dialog.alert('Tenés que ingresar el Email de tu oponente, volvé a intentar.');
+            return;
+        }else{
+            partida=db.collection("partida").doc(email2);
+            getDatosUnirse();
+        }
     });
 
     $$('.abrir-login').on('click', function(){
@@ -92,6 +96,7 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
     $$('.abrir-registro').on('click', function(){
         var abrirPopupRegistro=app.popup.open(".popup-registro");
     });
+
     $$('.registrar').on('click',crearUsuario);
 
     $$('.logout').on('click', function(){
@@ -100,6 +105,11 @@ $$(document).on('page:init', '.page[data-name="index"]', function (e) {
             abrirPopupInicio=app.popup.open(".popup-inicio");
         });
     });
+
+    $$('.sala-publica').on('click',function(){
+        app.dialog.alert('Aún podes jugar con un amigo: Uno crea la partida, y el otro se une con el Email de quien la creó. '
+            +'Intentalo, ¡es muy fácil!', 'Sala EN CONSTRUCCION');
+    })
 })
 
 /************** MESA *************/
@@ -178,6 +188,10 @@ $$(document).on('page:init', '.page[data-name="mesa"]', function (e) {
 
 /********** FUNCIONES *************/
 function crearUsuario(){
+    if(!$$('#nickName').val()){
+        app.dialog.alert("Debes elegir un Apodo, si no, no sabremos como llamarte :´(");
+        return;
+    }
     email=$$('#email-registro').val();
     password=$$('#password-registro').val();
     firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -193,14 +207,15 @@ function crearUsuario(){
         });
     })
     .catch(function(error){
+        console.log(error.code);
         if(error.code=="auth/email-already-in-use"){
-            app.dialog.alert('Ya hay un usuario registrado con este Email.');
+            app.dialog.alert('Ya existe un usuario registrado con este Email.');
         }
         else if(error.code=="auth/invalid-email"){
             app.dialog.alert('El formato de Email no es válido.');
         }
         else if(error.code=='auth/weak-password') {
-            app.dialog.alert('La contraseña es demasiado débil.');
+            app.dialog.alert('La contraseña es demasiado débil. Debe tener un mínimo de 6 caracteres');
         }
         else{
             app.dialog.alert(error.message);
@@ -216,20 +231,20 @@ function login(){
         var cerrarPopupLogin=app.popup.close(".popup-login");
         user = firebase.auth().currentUser;
         nombre = user.displayName;
-        errorLogin=0;
     })
     .catch(function(error) {
-        alert(error.message);
-        if(errorLogin==0){
-            errorLogin++;
-            $$('#ul-login').append('<li class="row display-flex justify-content-center">'
-            +'<p class="col text-align-center">¿No tenes una cuenta?</p></li>'
-            +'<li class="row display-flex justify-content-center">'
-            +'<input type="button" value="Registrate" class="margin popup-close loginToRegistro"></li>');
+        console.log(error.code);
+        if(error.code=="auth/wrong-password"){
+            app.dialog.alert("La contraseña ingresada no es válida");
         }
-        $$('.loginToRegistro').on('click',function(){
-            abrirPopupRegistro=app.popup.open(".popup-registro");
-        });
+        else if(error.code=="auth/user-not-found"){
+            app.dialog.alert("El usuario ingresado no está registrado");
+        }else if(error.code=="auth/invalid-email"){
+            app.dialog.alert('El formato de Email no es válido.');
+        }
+        else{
+            app.dialog.alert(error.message);
+        }
     });
 }
 
@@ -255,9 +270,10 @@ function getDatos(){
 }
 
 function getDatosUnirse(){
-    $$('.email-partida').val('');
     partida.get().then(function(doc) {
             if (doc.exists) {
+                $$('.email-partida').val('');
+                var cerrarPopupUnirse=app.popup.close(".unirse-partida");
                 datos=doc.data();
                 console.log("datos:", datos);
                 setTimeout(function(){
@@ -270,7 +286,7 @@ function getDatosUnirse(){
                 return 0;
             } else {
                 app.dialog.alert('La partida solicitada no está creada.'
-                    +' Podés intentar otra vez, verificá que el mail de tu oponente este escrito de forma correcta',
+                    +' Verificá que el mail de tu oponente este escrito de forma correcta y volvé a intentar',
                     email2+' no está conectado');
                 console.log("No such document!");
             }
